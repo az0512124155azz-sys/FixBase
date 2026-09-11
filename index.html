@@ -3,107 +3,88 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#ffffff">
-  <title>FixBase — Find a repair guide</title>
-  <meta name="description" content="Search real repair guides and open repair knowledge from multiple sources. No AI search required.">
+  <meta name="theme-color" content="#0b1020">
+  <title>FixBase — Repair knowledge search</title>
+  <meta name="description" content="Search repair guides, device knowledge and board-level references inside one repair workspace.">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="search.css">
+  <link rel="stylesheet" href="search.css?v=20260911-4">
 </head>
 <body>
 <header class="topbar">
   <a class="logo" href="/" aria-label="FixBase home"><span class="logo-mark">F</span><span>FixBase</span></a>
-  <nav class="topnav">
-    <a href="#search">Search</a>
-    <a href="#browse">Browse</a>
-    <a href="#sources">Sources</a>
-  </nav>
-  <div class="top-actions"><span class="open-badge">Open repair search</span></div>
+  <nav class="topnav"><a href="#search">Search</a><a href="#browse">Devices</a><a href="#sources">Libraries</a></nav>
+  <div class="top-actions"><span class="build-badge">INDEX v4 · 2026.09.11</span></div>
 </header>
 
 <main>
-  <section class="hero" id="search">
+  <section class="hero hero-v4" id="search">
     <div class="hero-inner">
-      <div class="eyebrow">Repair knowledge, actually searchable</div>
-      <h1>What are you trying to fix?</h1>
-      <p class="hero-copy">Search real devices, repair guides, troubleshooting pages and community repair documentation from open sources — without an AI guessing what you meant.</p>
-
+      <div class="eyebrow">ONE REPAIR WORKSPACE</div>
+      <h1>Search once.<br>Repair here.</h1>
+      <p class="hero-copy">Find devices, faults, guides, firmware references and board-level knowledge. Results open inside FixBase instead of throwing you across the web.</p>
       <div class="search-wrap">
         <form class="google-search" id="searchForm" autocomplete="off">
           <span class="magnifier" aria-hidden="true"></span>
-          <input id="q" type="search" placeholder="Try “iPhone 13 battery”, “PS5 HDMI”, “Galaxy S22 screen”…" aria-label="Search repair guides">
+          <input id="q" type="search" placeholder="Search a device, symptom or repair — e.g. iPhone 15 battery" aria-label="Search repair knowledge">
           <button class="clear-btn" id="clearBtn" type="button" aria-label="Clear search">×</button>
           <button class="search-btn" type="submit">Search</button>
           <div class="suggestions" id="suggestions" role="listbox"></div>
         </form>
       </div>
-
       <div class="quick-searches">
-        <button data-query="iPhone battery replacement">iPhone battery</button>
-        <button data-query="Samsung Galaxy screen replacement">Galaxy screen</button>
-        <button data-query="PlayStation 5 HDMI repair">PS5 HDMI</button>
-        <button data-query="MacBook battery replacement">MacBook battery</button>
+        <button data-query="iPhone 15 battery replacement">iPhone 15 battery</button>
+        <button data-query="PS5 no display HDMI">PS5 no display</button>
+        <button data-query="MacBook not charging">MacBook charging</button>
+        <button data-query="Galaxy S23 screen replacement">Galaxy S23 screen</button>
+        <button data-query="motherboard no power">Motherboard no power</button>
       </div>
-
-      <div class="trust-row">
-        <span><b>Live</b> iFixit API</span>
-        <span><b>Open</b> community docs</span>
-        <span><b>No AI</b> in search</span>
-      </div>
+      <div class="trust-row"><span><b>Internal viewer</b> for results</span><span><b>Fuzzy search</b> friendly</span><span><b>No AI</b> required</span></div>
     </div>
   </section>
 
   <section class="results-shell" id="resultsSection" hidden>
     <div class="results-head">
-      <div>
-        <p class="results-label">SEARCH RESULTS</p>
-        <h2 id="resultTitle">Results</h2>
-        <p id="resultMeta"></p>
-      </div>
+      <div><p class="results-label">REPAIR INDEX</p><h2 id="resultTitle">Results</h2><p id="resultMeta"></p></div>
       <div class="source-tabs" id="sourceTabs">
         <button class="active" data-source="all">All</button>
-        <button data-source="ifixit">iFixit</button>
+        <button data-source="ifixit">Guides</button>
         <button data-source="repairai">Community</button>
-        <button data-source="tools">Board tools</button>
+        <button data-source="tools">Board repair</button>
       </div>
     </div>
     <div class="result-grid" id="results"></div>
   </section>
 
-  <section class="browse" id="browse">
-    <div class="section-title">
-      <div><span class="section-kicker">BROWSE</span><h2>Start with a device</h2></div>
-      <p>Popular starting points for repairs people search every day.</p>
-    </div>
+  <section class="browse browse-v4" id="browse">
+    <div class="section-title"><div><span class="section-kicker">DEVICE INDEX</span><h2>Browse by what is in front of you</h2></div><p>Start broad. FixBase narrows the search with related repair terms.</p></div>
     <div class="device-cards">
-      <button data-query="iPhone repair"><span>📱</span><b>Phones</b><small>iPhone, Galaxy, Pixel and more</small></button>
-      <button data-query="laptop repair"><span>💻</span><b>Laptops</b><small>MacBook, Dell, Lenovo, HP and more</small></button>
-      <button data-query="game console repair"><span>🎮</span><b>Game consoles</b><small>PlayStation, Xbox, Nintendo</small></button>
-      <button data-query="tablet repair"><span>▣</span><b>Tablets</b><small>iPad, Galaxy Tab, Surface</small></button>
-      <button data-query="camera repair"><span>📷</span><b>Cameras</b><small>Canon, Sony, Nikon, GoPro</small></button>
-      <button data-query="TV repair"><span>📺</span><b>TVs & displays</b><small>Samsung, LG, Sony and more</small></button>
-      <button data-query="printer repair"><span>🖨</span><b>Printers</b><small>HP, Canon, Epson, Brother</small></button>
-      <button data-query="router repair"><span>📡</span><b>Networking</b><small>Routers, Wi‑Fi and network gear</small></button>
+      <button data-query="smartphone repair"><span>📱</span><b>Phones</b><small>Apple · Samsung · Google · Xiaomi · more</small></button>
+      <button data-query="laptop repair"><span>💻</span><b>Laptops</b><small>MacBook · Dell · Lenovo · HP · ASUS · more</small></button>
+      <button data-query="game console repair"><span>🎮</span><b>Consoles</b><small>PlayStation · Xbox · Nintendo · handhelds</small></button>
+      <button data-query="tablet repair"><span>▣</span><b>Tablets</b><small>iPad · Galaxy Tab · Surface · more</small></button>
+      <button data-query="camera repair"><span>📷</span><b>Cameras</b><small>Canon · Sony · Nikon · GoPro · DJI</small></button>
+      <button data-query="TV monitor repair"><span>📺</span><b>TVs & displays</b><small>TV · monitor · projector · display boards</small></button>
+      <button data-query="printer repair"><span>🖨</span><b>Printers</b><small>HP · Canon · Epson · Brother · more</small></button>
+      <button data-query="router network repair"><span>📡</span><b>Networking</b><small>Routers · switches · Wi‑Fi · adapters</small></button>
+      <button data-query="motherboard boardview schematic repair"><span>🧰</span><b>Board repair</b><small>PCB · boardview · schematic · measurements</small></button>
+      <button data-query="SSD storage repair"><span>💾</span><b>Storage</b><small>SSD · HDD · USB storage · recovery</small></button>
+      <button data-query="smartwatch repair"><span>⌚</span><b>Wearables</b><small>Watch · fitness tracker · earbuds</small></button>
+      <button data-query="drone repair"><span>🛸</span><b>Drones & gear</b><small>DJI · controllers · cameras · batteries</small></button>
     </div>
   </section>
 
   <section class="sources-section" id="sources">
-    <div class="section-title">
-      <div><span class="section-kicker">OPEN SOURCES</span><h2>One search, multiple repair libraries</h2></div>
-      <p>FixBase keeps the source visible so you know where each result came from.</p>
-    </div>
+    <div class="section-title"><div><span class="section-kicker">CONNECTED KNOWLEDGE</span><h2>Sources feed FixBase. They do not replace it.</h2></div><p>Search results are normalized and displayed in the FixBase workspace.</p></div>
     <div class="source-cards">
-      <article><div class="source-icon orange">iF</div><div><h3>iFixit API</h3><p>Live device and step-by-step guide search through iFixit’s public API.</p><span>Content: CC BY-NC-SA · Attribution shown</span></div></article>
-      <article><div class="source-icon blue">RA</div><div><h3>RepairAI-Files</h3><p>MIT-licensed community repair documentation and indexed device files.</p><span>Integrated on demand from the public repository</span></div></article>
-      <article><div class="source-icon green">OB</div><div><h3>OpenBoardData</h3><p>Known-good board measurements for board-level electronics diagnosis.</p><span>Specialist board-repair source</span></div></article>
-      <article><div class="source-icon violet">BR</div><div><h3>BoardRipper</h3><p>Open-source browser boardview viewer for advanced board-level work.</p><span>AGPL tool — linked, not copied into FixBase</span></div></article>
+      <article><div class="source-icon orange">iF</div><div><h3>iFixit</h3><p>Structured step-by-step repair guides, device pages, images, tools and parts.</p><span>Displayed inside FixBase with attribution</span></div></article>
+      <article><div class="source-icon blue">RA</div><div><h3>RepairAI-Files</h3><p>Community repair documents, solutions and device-specific files.</p><span>Rendered inside FixBase</span></div></article>
+      <article><div class="source-icon green">OB</div><div><h3>OpenBoardData</h3><p>Board-level measurement references for electronics diagnosis.</p><span>Shown as an internal technical reference</span></div></article>
+      <article><div class="source-icon violet">BR</div><div><h3>Board repair tools</h3><p>Boardview and schematic tooling references for advanced repairs.</p><span>Explained inside the workspace</span></div></article>
     </div>
   </section>
 </main>
 
-<footer>
-  <div><b>FixBase</b> <span>Search repair knowledge from open sources.</span></div>
-  <div class="footer-links"><a href="https://www.ifixit.com" target="_blank" rel="noreferrer">iFixit</a><a href="https://github.com/kazemcodes/RepairAi-files" target="_blank" rel="noreferrer">RepairAI-Files</a><a href="https://github.com/warnerbryce/OpenBoardData" target="_blank" rel="noreferrer">OpenBoardData</a></div>
-</footer>
+<footer><div><b>FixBase</b> <span>Repair knowledge in one workspace.</span></div><div class="footer-version">Build INDEX-v4-20260911</div></footer>
 
 <div class="modal" id="guideModal" aria-hidden="true">
   <div class="modal-backdrop" data-close-modal></div>
@@ -112,7 +93,6 @@
     <div id="guideBody" class="guide-body"></div>
   </div>
 </div>
-
-<script src="app.js"></script>
+<script src="app.js?v=20260911-4"></script>
 </body>
 </html>
