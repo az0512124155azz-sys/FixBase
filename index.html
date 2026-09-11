@@ -1,89 +1,115 @@
 <!doctype html>
-<html lang="he" dir="rtl">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>FixBase — חיפוש תיקונים חכם</title>
-  <meta name="description" content="חיפוש חכם למדריכי תיקון, אבחון והתקנת מערכות הפעלה למכשירים אלקטרוניים משנת 2010 והלאה.">
+  <meta name="theme-color" content="#ffffff">
+  <title>FixBase — Find a repair guide</title>
+  <meta name="description" content="Search real repair guides and open repair knowledge from multiple sources. No AI search required.">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="search.css">
 </head>
 <body>
-<header class="top">
-  <div class="wrap topin">
-    <a class="brand" href="#"><span class="mark"><span>F</span></span>FixBase</a>
-    <nav class="nav"><a href="#search">חיפוש</a><a href="#how">איך זה עובד</a><a href="#os">מערכות הפעלה</a></nav>
-    <div class="topspace"></div>
-    <button class="mini" onclick="focusSearch()">חיפוש ⌕</button>
-  </div>
+<header class="topbar">
+  <a class="logo" href="/" aria-label="FixBase home"><span class="logo-mark">F</span><span>FixBase</span></a>
+  <nav class="topnav">
+    <a href="#search">Search</a>
+    <a href="#browse">Browse</a>
+    <a href="#sources">Sources</a>
+  </nav>
+  <div class="top-actions"><span class="open-badge">Open repair search</span></div>
 </header>
 
-<section class="hero" id="search">
-  <div class="wrap search-hero">
-    <div class="kicker">FixBase AI Search</div>
-    <h1>מה אתה מנסה לתקן?</h1>
-    <p>תאר את התקלה או את מה שאתה רוצה לעשות. קודם נמצא את הבעיה הנכונה, אחר כך נזהה את המכשיר המדויק שלך, ורק אז נציג מדריך.</p>
+<main>
+  <section class="hero" id="search">
+    <div class="hero-inner">
+      <div class="eyebrow">Repair knowledge, actually searchable</div>
+      <h1>What are you trying to fix?</h1>
+      <p class="hero-copy">Search real devices, repair guides, troubleshooting pages and community repair documentation from open sources — without an AI guessing what you meant.</p>
 
-    <div class="searchbox main-searchbox">
-      <span class="main-search-icon">⌕</span>
-      <input id="q" autocomplete="off" spellcheck="false" placeholder="לדוגמה: הטלפון לא נטען / מסך שחור / להתקין Windows 11">
-      <button onclick="searchGuides()">חפש</button>
-    </div>
+      <div class="search-wrap">
+        <form class="google-search" id="searchForm" autocomplete="off">
+          <span class="magnifier" aria-hidden="true"></span>
+          <input id="q" type="search" placeholder="Try “iPhone 13 battery”, “PS5 HDMI”, “Galaxy S22 screen”…" aria-label="Search repair guides">
+          <button class="clear-btn" id="clearBtn" type="button" aria-label="Clear search">×</button>
+          <button class="search-btn" type="submit">Search</button>
+          <div class="suggestions" id="suggestions" role="listbox"></div>
+        </form>
+      </div>
 
-    <div class="examples">
-      <span>חיפושים נפוצים:</span>
-      <button onclick="quick('לא נטען')">לא נטען</button>
-      <button onclick="quick('מסך שחור')">מסך שחור</button>
-      <button onclick="quick('החלפת סוללה')">החלפת סוללה</button>
-      <button onclick="quick('התקנת Windows 11')">Windows 11</button>
-    </div>
-  </div>
-</section>
+      <div class="quick-searches">
+        <button data-query="iPhone battery replacement">iPhone battery</button>
+        <button data-query="Samsung Galaxy screen replacement">Galaxy screen</button>
+        <button data-query="PlayStation 5 HDMI repair">PS5 HDMI</button>
+        <button data-query="MacBook battery replacement">MacBook battery</button>
+      </div>
 
-<main class="wrap ai-shell">
-  <section id="guides" class="result-section">
-    <div class="sectionlead">
-      <div>
-        <span class="section-kicker">תוצאות</span>
-        <h2 id="resultTitle">חיפוש חכם לפי בעיה</h2>
-        <p id="resultSub">החיפוש מבין את הכוונה שלך לפני שהוא מחפש מכשיר.</p>
+      <div class="trust-row">
+        <span><b>Live</b> iFixit API</span>
+        <span><b>Open</b> community docs</span>
+        <span><b>No AI</b> in search</span>
       </div>
     </div>
-    <div class="guidelist ai-guidelist" id="results"></div>
   </section>
 
-  <section id="how" class="how-section">
-    <div class="sectionlead"><div><span class="section-kicker">התהליך</span><h2>לא מנחשים איזה מכשיר יש לך</h2></div></div>
-    <div class="how-grid">
-      <article><span>01</span><h3>מחפשים את הבעיה</h3><p>Gemini מנתח את מה שכתבת ומציע כמה פירושים רלוונטיים.</p></article>
-      <article><span>02</span><h3>מחפשים את המכשיר</h3><p>אחרי בחירת הבעיה נפתח חיפוש חדש ליצרן ולדגם המדויק.</p></article>
-      <article><span>03</span><h3>מקבלים מדריך</h3><p>המדריך נבנה רק אחרי שהדגם אושר, עם אזהרות ושלבים מותאמים.</p></article>
+  <section class="results-shell" id="resultsSection" hidden>
+    <div class="results-head">
+      <div>
+        <p class="results-label">SEARCH RESULTS</p>
+        <h2 id="resultTitle">Results</h2>
+        <p id="resultMeta"></p>
+      </div>
+      <div class="source-tabs" id="sourceTabs">
+        <button class="active" data-source="all">All</button>
+        <button data-source="ifixit">iFixit</button>
+        <button data-source="repairai">Community</button>
+        <button data-source="tools">Board tools</button>
+      </div>
+    </div>
+    <div class="result-grid" id="results"></div>
+  </section>
+
+  <section class="browse" id="browse">
+    <div class="section-title">
+      <div><span class="section-kicker">BROWSE</span><h2>Start with a device</h2></div>
+      <p>Popular starting points for repairs people search every day.</p>
+    </div>
+    <div class="device-cards">
+      <button data-query="iPhone repair"><span>📱</span><b>Phones</b><small>iPhone, Galaxy, Pixel and more</small></button>
+      <button data-query="laptop repair"><span>💻</span><b>Laptops</b><small>MacBook, Dell, Lenovo, HP and more</small></button>
+      <button data-query="game console repair"><span>🎮</span><b>Game consoles</b><small>PlayStation, Xbox, Nintendo</small></button>
+      <button data-query="tablet repair"><span>▣</span><b>Tablets</b><small>iPad, Galaxy Tab, Surface</small></button>
+      <button data-query="camera repair"><span>📷</span><b>Cameras</b><small>Canon, Sony, Nikon, GoPro</small></button>
+      <button data-query="TV repair"><span>📺</span><b>TVs & displays</b><small>Samsung, LG, Sony and more</small></button>
+      <button data-query="printer repair"><span>🖨</span><b>Printers</b><small>HP, Canon, Epson, Brother</small></button>
+      <button data-query="router repair"><span>📡</span><b>Networking</b><small>Routers, Wi‑Fi and network gear</small></button>
     </div>
   </section>
 
-  <section id="os" class="osstrip">
-    <h2>גם התקנות ושחזורי מערכת</h2>
-    <div class="osgrid">
-      <div class="oscard"><b>Windows</b><span>התקנה, Recovery, UEFI, דרייברים ושחזור.</span></div>
-      <div class="oscard"><b>macOS</b><span>Recovery, התקנה מחדש ושחזור.</span></div>
-      <div class="oscard"><b>Android</b><span>Recovery, Fastboot, Firmware והגדרות יצרן.</span></div>
-      <div class="oscard"><b>Linux</b><span>Live USB, Dual Boot ו-Bootloader.</span></div>
+  <section class="sources-section" id="sources">
+    <div class="section-title">
+      <div><span class="section-kicker">OPEN SOURCES</span><h2>One search, multiple repair libraries</h2></div>
+      <p>FixBase keeps the source visible so you know where each result came from.</p>
+    </div>
+    <div class="source-cards">
+      <article><div class="source-icon orange">iF</div><div><h3>iFixit API</h3><p>Live device and step-by-step guide search through iFixit’s public API.</p><span>Content: CC BY-NC-SA · Attribution shown</span></div></article>
+      <article><div class="source-icon blue">RA</div><div><h3>RepairAI-Files</h3><p>MIT-licensed community repair documentation and indexed device files.</p><span>Integrated on demand from the public repository</span></div></article>
+      <article><div class="source-icon green">OB</div><div><h3>OpenBoardData</h3><p>Known-good board measurements for board-level electronics diagnosis.</p><span>Specialist board-repair source</span></div></article>
+      <article><div class="source-icon violet">BR</div><div><h3>BoardRipper</h3><p>Open-source browser boardview viewer for advanced board-level work.</p><span>AGPL tool — linked, not copied into FixBase</span></div></article>
     </div>
   </section>
 </main>
 
-<footer class="footer"><div class="wrap">FixBase · מדריכי תיקון למכשירים משנת 2010 והלאה · בתיקונים מסוכנים יש לפנות לטכנאי מוסמך.</div></footer>
+<footer>
+  <div><b>FixBase</b> <span>Search repair knowledge from open sources.</span></div>
+  <div class="footer-links"><a href="https://www.ifixit.com" target="_blank" rel="noreferrer">iFixit</a><a href="https://github.com/kazemcodes/RepairAi-files" target="_blank" rel="noreferrer">RepairAI-Files</a><a href="https://github.com/warnerbryce/OpenBoardData" target="_blank" rel="noreferrer">OpenBoardData</a></div>
+</footer>
 
-<div class="modal" id="modal" onclick="if(event.target===this)closeGuide()">
-  <div class="panel">
-    <div class="panelhead">
-      <div><span class="verified">● FixBase AI</span></div>
-      <button class="x" onclick="closeGuide()">×</button>
-    </div>
-    <div class="panelbody">
-      <article class="article" id="article"></article>
-      <aside id="guideAside"></aside>
-    </div>
+<div class="modal" id="guideModal" aria-hidden="true">
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="guide-panel" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+    <div class="guide-top"><div id="guideSource"></div><button data-close-modal aria-label="Close">×</button></div>
+    <div id="guideBody" class="guide-body"></div>
   </div>
 </div>
 
