@@ -1,4 +1,4 @@
-const MODEL = 'gemini-3.5-flash';
+const MODEL = 'gemini-3.8-flash';
 
 function send(res, status, body) {
   res.statusCode = status;
@@ -17,6 +17,14 @@ function cleanJson(text) {
   const lastArr = raw.lastIndexOf(']');
   if (firstArr >= 0 && lastArr > firstArr) return JSON.parse(raw.slice(firstArr, lastArr + 1));
   throw new Error('Invalid JSON from Gemini');
+}
+
+function safeGoogleMessage(message) {
+  const text = String(message || 'Unknown Gemini API error');
+  return text
+    .replace(/AIza[0-9A-Za-z_-]{20,}/g, '[API_KEY_HIDDEN]')
+    .replace(/AQ\.[0-9A-Za-z_-]{20,}/g, '[API_KEY_HIDDEN]')
+    .slice(0, 700);
 }
 
 async function gemini(prompt) {
@@ -40,23 +48,31 @@ async function gemini(prompt) {
       body: JSON.stringify({
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
         generationConfig: {
-          temperature: 0.25,
           maxOutputTokens: 2200,
           responseMimeType: 'application/json'
         }
       })
     });
 
-    const data = await response.json();
+    const rawText = await response.text();
+    let data = {};
+    try { data = rawText ? JSON.parse(rawText) : {}; } catch (_) { data = { raw: rawText }; }
+
     if (!response.ok) {
-      const message = data?.error?.message || `Gemini request failed (${response.status})`;
-      const err = new Error(message);
+      const googleMessage = safeGoogleMessage(data?.error?.message || rawText || `Gemini request failed (${response.status})`);
+      const err = new Error(googleMessage);
       err.code = 'GEMINI_API_ERROR';
+      err.upstreamStatus = response.status;
+      err.upstreamCode = data?.error?.status || data?.error?.code || null;
       throw err;
     }
 
     const text = data?.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('') || '';
-    if (!text) throw new Error('Gemini returned an empty response');
+    if (!text) {
+      const err = new Error('Gemini returned an empty response');
+      err.code = 'GEMINI_EMPTY_RESPONSE';
+      throw err;
+    }
     return cleanJson(text);
   } finally {
     clearTimeout(timeout);
@@ -118,13 +134,29 @@ module.exports = async function handler(req, res) {
     }
     return send(res, 400, { error: 'UNKNOWN_MODE' });
   } catch (error) {
-    console.error('FixBase Gemini error:', error);
+    console.error('FixBase Gemini error:', {
+      code: error.code,
+      message: safeGoogleMessage(error.message),
+      upstreamStatus: error.upstreamStatus,
+      upstreamCode: error.upstreamCode
+    });
+
+    if (error.name === 'AbortError') {
+      return send(res, 504, {
+        error: 'GEMINI_TIMEOUT',
+        message: 'Gemini לא הגיב בזמן. נסה שוב בעוד רגע.'
+      });
+    }
+
     const status = error.code === 'GEMINI_NOT_CONFIGURED' ? 503 : 502;
     return send(res, status, {
       error: error.code || 'AI_SEARCH_FAILED',
       message: error.code === 'GEMINI_NOT_CONFIGURED'
-        ? 'Gemini API is not configured on the server.'
-        : 'Gemini search failed. Please try again.'
+        ? 'GEMINI_API_KEY לא מוגדר בשרת.'
+        : safeGoogleMessage(error.message || 'Gemini search failed'),
+      upstreamStatus: error.upstreamStatus || null,
+      upstreamCode: error.upstreamCode || null,
+      model: MODEL
     });
   }
 };
