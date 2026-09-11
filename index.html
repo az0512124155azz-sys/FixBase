@@ -3,96 +3,103 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#0b1020">
-  <title>FixBase — Repair knowledge search</title>
-  <meta name="description" content="Search repair guides, device knowledge and board-level references inside one repair workspace.">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="search.css?v=20260911-4">
+  <meta name="theme-color" content="#ffffff">
+  <title>FixBase — Repair anything</title>
+  <meta name="description" content="Search devices, symptoms, repair procedures and technical references inside FixBase.">
+  <link rel="stylesheet" href="styles.css?v=20260911-5">
+  <link rel="stylesheet" href="search.css?v=20260911-5">
 </head>
 <body>
 <header class="topbar">
   <a class="logo" href="/" aria-label="FixBase home"><span class="logo-mark">F</span><span>FixBase</span></a>
-  <nav class="topnav"><a href="#search">Search</a><a href="#browse">Devices</a><a href="#sources">Libraries</a></nav>
-  <div class="top-actions"><span class="build-badge">INDEX v4 · 2026.09.11</span></div>
+  <nav class="topnav"><a href="#search">Search</a><a href="#browse">Browse devices</a><a href="#knowledge">Knowledge</a></nav>
+  <span class="build-badge">BUILD v5</span>
 </header>
 
 <main>
-  <section class="hero hero-v4" id="search">
+  <section class="hero" id="search">
     <div class="hero-inner">
-      <div class="eyebrow">ONE REPAIR WORKSPACE</div>
-      <h1>Search once.<br>Repair here.</h1>
-      <p class="hero-copy">Find devices, faults, guides, firmware references and board-level knowledge. Results open inside FixBase instead of throwing you across the web.</p>
-      <div class="search-wrap">
-        <form class="google-search" id="searchForm" autocomplete="off">
-          <span class="magnifier" aria-hidden="true"></span>
-          <input id="q" type="search" placeholder="Search a device, symptom or repair — e.g. iPhone 15 battery" aria-label="Search repair knowledge">
-          <button class="clear-btn" id="clearBtn" type="button" aria-label="Clear search">×</button>
-          <button class="search-btn" type="submit">Search</button>
-          <div class="suggestions" id="suggestions" role="listbox"></div>
-        </form>
-      </div>
+      <div class="eyebrow">THE OPEN REPAIR INDEX</div>
+      <h1>Repair anything.<br><span>Stay inside FixBase.</span></h1>
+      <p class="hero-copy">Search devices, symptoms, procedures, parts, firmware, board data and repair documentation from one place. Results open here — not in another website.</p>
+      <form class="google-search" id="searchForm" autocomplete="off">
+        <span class="magnifier" aria-hidden="true"></span>
+        <input id="q" type="search" placeholder="Search a device, problem or repair — e.g. PS5 no display" aria-label="Search repairs">
+        <button class="clear-btn" id="clearBtn" type="button" aria-label="Clear">×</button>
+        <button class="search-btn" type="submit">Search</button>
+        <div class="suggestions" id="suggestions"></div>
+      </form>
       <div class="quick-searches">
-        <button data-query="iPhone 15 battery replacement">iPhone 15 battery</button>
-        <button data-query="PS5 no display HDMI">PS5 no display</button>
-        <button data-query="MacBook not charging">MacBook charging</button>
-        <button data-query="Galaxy S23 screen replacement">Galaxy S23 screen</button>
-        <button data-query="motherboard no power">Motherboard no power</button>
+        <button data-query="iPhone not charging">iPhone not charging</button>
+        <button data-query="PS5 no display">PS5 no display</button>
+        <button data-query="MacBook battery">MacBook battery</button>
+        <button data-query="Samsung boot loop">Samsung boot loop</button>
       </div>
-      <div class="trust-row"><span><b>Internal viewer</b> for results</span><span><b>Fuzzy search</b> friendly</span><span><b>No AI</b> required</span></div>
+      <div class="index-strip">
+        <div><b>Guides</b><span>Step-by-step repair procedures</span></div>
+        <div><b>Devices</b><span>Models, families and categories</span></div>
+        <div><b>Problems</b><span>Symptoms, faults and related fixes</span></div>
+        <div><b>Board data</b><span>Advanced electronics references</span></div>
+      </div>
     </div>
   </section>
 
   <section class="results-shell" id="resultsSection" hidden>
-    <div class="results-head">
-      <div><p class="results-label">REPAIR INDEX</p><h2 id="resultTitle">Results</h2><p id="resultMeta"></p></div>
-      <div class="source-tabs" id="sourceTabs">
-        <button class="active" data-source="all">All</button>
-        <button data-source="ifixit">Guides</button>
-        <button data-source="repairai">Community</button>
-        <button data-source="tools">Board repair</button>
+    <div class="results-layout">
+      <aside class="filters">
+        <b>Search type</b>
+        <button class="active" data-source="all">Everything</button>
+        <button data-source="ifixit">Repair guides</button>
+        <button data-source="repairai">Community docs</button>
+        <button data-source="tools">Board knowledge</button>
+        <div class="filter-note">FixBase also expands related terms, model aliases and common fault names.</div>
+      </aside>
+      <div class="results-main">
+        <div class="results-head"><div><p class="results-label">RESULTS</p><h2 id="resultTitle">Search results</h2><p id="resultMeta"></p></div></div>
+        <div class="related-row" id="relatedRow"></div>
+        <div class="result-grid" id="results"></div>
       </div>
     </div>
-    <div class="result-grid" id="results"></div>
   </section>
 
-  <section class="browse browse-v4" id="browse">
-    <div class="section-title"><div><span class="section-kicker">DEVICE INDEX</span><h2>Browse by what is in front of you</h2></div><p>Start broad. FixBase narrows the search with related repair terms.</p></div>
+  <section class="browse" id="browse">
+    <div class="section-title"><div><span class="section-kicker">BROWSE DEVICES</span><h2>Start with what you own</h2></div><p>Search broadly first, then narrow to the exact model and procedure.</p></div>
     <div class="device-cards">
-      <button data-query="smartphone repair"><span>📱</span><b>Phones</b><small>Apple · Samsung · Google · Xiaomi · more</small></button>
-      <button data-query="laptop repair"><span>💻</span><b>Laptops</b><small>MacBook · Dell · Lenovo · HP · ASUS · more</small></button>
-      <button data-query="game console repair"><span>🎮</span><b>Consoles</b><small>PlayStation · Xbox · Nintendo · handhelds</small></button>
-      <button data-query="tablet repair"><span>▣</span><b>Tablets</b><small>iPad · Galaxy Tab · Surface · more</small></button>
-      <button data-query="camera repair"><span>📷</span><b>Cameras</b><small>Canon · Sony · Nikon · GoPro · DJI</small></button>
-      <button data-query="TV monitor repair"><span>📺</span><b>TVs & displays</b><small>TV · monitor · projector · display boards</small></button>
-      <button data-query="printer repair"><span>🖨</span><b>Printers</b><small>HP · Canon · Epson · Brother · more</small></button>
-      <button data-query="router network repair"><span>📡</span><b>Networking</b><small>Routers · switches · Wi‑Fi · adapters</small></button>
-      <button data-query="motherboard boardview schematic repair"><span>🧰</span><b>Board repair</b><small>PCB · boardview · schematic · measurements</small></button>
-      <button data-query="SSD storage repair"><span>💾</span><b>Storage</b><small>SSD · HDD · USB storage · recovery</small></button>
-      <button data-query="smartwatch repair"><span>⌚</span><b>Wearables</b><small>Watch · fitness tracker · earbuds</small></button>
-      <button data-query="drone repair"><span>🛸</span><b>Drones & gear</b><small>DJI · controllers · cameras · batteries</small></button>
+      <button data-query="phone repair"><span>📱</span><b>Phones</b><small>iPhone, Galaxy, Pixel, Xiaomi, OnePlus and more</small></button>
+      <button data-query="laptop repair"><span>💻</span><b>Laptops</b><small>MacBook, Dell, Lenovo, HP, ASUS, Acer</small></button>
+      <button data-query="game console repair"><span>🎮</span><b>Consoles</b><small>PlayStation, Xbox, Nintendo, Steam Deck</small></button>
+      <button data-query="tablet repair"><span>▣</span><b>Tablets</b><small>iPad, Galaxy Tab, Surface and more</small></button>
+      <button data-query="camera repair"><span>📷</span><b>Cameras</b><small>Canon, Sony, Nikon, GoPro, DJI</small></button>
+      <button data-query="tv monitor repair"><span>📺</span><b>Displays</b><small>TVs, monitors, projectors and panels</small></button>
+      <button data-query="printer repair"><span>🖨</span><b>Printers</b><small>HP, Canon, Epson, Brother, 3D printers</small></button>
+      <button data-query="router network repair"><span>📡</span><b>Networking</b><small>Routers, Wi-Fi, switches and access points</small></button>
+      <button data-query="ssd hard drive repair"><span>💾</span><b>Storage</b><small>SSD, HDD, NAS and external drives</small></button>
+      <button data-query="smartwatch repair"><span>⌚</span><b>Wearables</b><small>Apple Watch, Galaxy Watch, Garmin and more</small></button>
+      <button data-query="drone repair"><span>🚁</span><b>Drones</b><small>DJI, FPV, controllers and batteries</small></button>
+      <button data-query="motherboard board repair"><span>🔬</span><b>Board repair</b><small>Logic boards, schematics, measurements and soldering</small></button>
     </div>
   </section>
 
-  <section class="sources-section" id="sources">
-    <div class="section-title"><div><span class="section-kicker">CONNECTED KNOWLEDGE</span><h2>Sources feed FixBase. They do not replace it.</h2></div><p>Search results are normalized and displayed in the FixBase workspace.</p></div>
-    <div class="source-cards">
-      <article><div class="source-icon orange">iF</div><div><h3>iFixit</h3><p>Structured step-by-step repair guides, device pages, images, tools and parts.</p><span>Displayed inside FixBase with attribution</span></div></article>
-      <article><div class="source-icon blue">RA</div><div><h3>RepairAI-Files</h3><p>Community repair documents, solutions and device-specific files.</p><span>Rendered inside FixBase</span></div></article>
-      <article><div class="source-icon green">OB</div><div><h3>OpenBoardData</h3><p>Board-level measurement references for electronics diagnosis.</p><span>Shown as an internal technical reference</span></div></article>
-      <article><div class="source-icon violet">BR</div><div><h3>Board repair tools</h3><p>Boardview and schematic tooling references for advanced repairs.</p><span>Explained inside the workspace</span></div></article>
+  <section class="knowledge" id="knowledge">
+    <div class="section-title"><div><span class="section-kicker">KNOWLEDGE LAYERS</span><h2>More than repair guides</h2></div></div>
+    <div class="knowledge-grid">
+      <article><b>Symptoms</b><p>Search “won’t turn on”, “no display”, “boot loop”, “overheating” and related fault names.</p></article>
+      <article><b>Procedures</b><p>Battery, screen, port, fan, SSD, thermal paste, firmware and board-level repair.</p></article>
+      <article><b>Hardware identity</b><p>Model families, device aliases and technical identifiers help broad searches find the right target.</p></article>
+      <article><b>Technical references</b><p>Board measurements and specialist documentation stay accessible in the same FixBase workspace.</p></article>
     </div>
   </section>
 </main>
 
-<footer><div><b>FixBase</b> <span>Repair knowledge in one workspace.</span></div><div class="footer-version">Build INDEX-v4-20260911</div></footer>
+<footer><b>FixBase</b><span>Open repair knowledge, indexed into one workspace.</span><span class="footer-version">v5</span></footer>
 
 <div class="modal" id="guideModal" aria-hidden="true">
   <div class="modal-backdrop" data-close-modal></div>
-  <div class="guide-panel" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+  <div class="guide-panel" role="dialog" aria-modal="true">
     <div class="guide-top"><div id="guideSource"></div><button data-close-modal aria-label="Close">×</button></div>
     <div id="guideBody" class="guide-body"></div>
   </div>
 </div>
-<script src="app.js?v=20260911-4"></script>
+<script src="app.js?v=20260911-5"></script>
 </body>
 </html>
