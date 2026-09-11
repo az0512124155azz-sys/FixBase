@@ -1,18 +1,92 @@
 <!doctype html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>FixBase — מאגר תיקונים למכשירים מ-2010</title>
-<meta name="description" content="מאגר מדריכי תיקון, אבחון והתקנת מערכות הפעלה למכשירים אלקטרוניים משנת 2010 והלאה.">
-<link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="search.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FixBase — חיפוש תיקונים חכם</title>
+  <meta name="description" content="חיפוש חכם למדריכי תיקון, אבחון והתקנת מערכות הפעלה למכשירים אלקטרוניים משנת 2010 והלאה.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="search.css">
 </head>
 <body>
-<header class="top"><div class="wrap topin"><a class="brand" href="#"><span class="mark"><span>F</span></span>FixBase</a><nav class="nav"><a href="#devices">מכשירים</a><a href="#guides">מדריכים</a><a href="#os">מערכות הפעלה</a><a href="#safety">בטיחות</a></nav><div class="topspace"></div><button class="mini" onclick="focusSearch()">חיפוש ⌕</button></div></header>
-<section class="hero"><div class="wrap heroin"><div><div class="kicker">מאגר תיקון ואבחון למכשירים מ־2010 ועד היום</div><h1>מצא את המכשיר.<br>מצא את התקלה.<br>תקן נכון.</h1><p>מדריכי אבחון, תיקון, תחזוקה והתקנת מערכות הפעלה לטלפונים, מחשבים, קונסולות, טלוויזיות, ציוד רשת, בית חכם ועוד.</p><div class="searchbox"><input id="q" autocomplete="off" placeholder="חפש תקלה, פעולה או מכשיר — לדוגמה: לא נטען, החלפת מסך, Galaxy S24"><button onclick="searchGuides()">חיפוש במאגר</button></div><div class="examples">חיפושים לדוגמה: <button onclick="quick('לא נטען')">לא נטען</button> · <button onclick="quick('החלפת סוללה')">החלפת סוללה</button> · <button onclick="quick('מסך שחור')">מסך שחור</button></div></div><aside class="countbox"><div class="bigcount" id="catalogCount">1,142,400<small>+</small></div><p>וריאציות מדריך זמינות במנוע הקטלוג. התוצאות נטענות לפי חיפוש ואינן מוחזקות כמיליון כרטיסים בדף אחד.</p><div class="countgrid"><div><b>16</b><span>קטגוריות</span></div><div><b>160</b><span>יצרנים/משפחות</span></div><div><b>2010–2026</b><span>שנות דגם</span></div><div><b>70</b><span>תקלות ופעולות</span></div></div></aside></div></section>
-<main class="wrap shell"><aside class="side" id="side"><h3>קטגוריות</h3></aside><div class="content"><section id="devices"><div class="sectionlead"><div><h2>עיון לפי סוג מכשיר</h2><p>בחר קטגוריה כדי לצמצם את המאגר.</p></div></div><div class="cats" id="cats"></div></section><section id="guides"><div class="sectionlead"><div><h2 id="resultTitle">מדריכים אחרונים</h2><p id="resultSub">חפש תקלה או פעולה, ואז בחר את המכשיר המדויק שלך.</p></div></div><div class="toolbar"><select id="year" onchange="searchGuides()"><option value="">כל השנים</option></select><select id="difficulty" onchange="searchGuides()"><option value="">כל הרמות</option><option>קל</option><option>בינוני</option><option>מתקדם</option></select></div><div class="guidelist" id="results"></div><div class="pager" id="pager"></div></section><section id="os" class="osstrip"><h2>התקנת מערכות הפעלה</h2><div class="osgrid"><div class="oscard"><b>Windows</b><span>Windows 7, 8.1, 10, 11 — USB, UEFI, Recovery, דרייברים ושחזור.</span></div><div class="oscard"><b>macOS</b><span>Internet Recovery, RecoveryOS, התקנה מחדש ויצירת מדיית התקנה.</span></div><div class="oscard"><b>Android</b><span>Factory images, Recovery, ADB/Fastboot והתקנות יצרן בהתאם לדגם.</span></div><div class="oscard"><b>Linux</b><span>Ubuntu, Mint, Fedora ועוד — Live USB, מחיצות, Dual Boot ותיקון Bootloader.</span></div></div></section><div class="catalog-note"><b>חשוב:</b> המאגר בנוי מתבניות אבחון ותיקון שמותאמות לפי קטגוריה, יצרן, שנת דגם ופעולה. הוא מספק מעל מיליון וריאציות ייחודיות, אבל לא נטען כאילו מיליון מדריכים נכתבו ונבדקו ידנית אחד־אחד. לפני פעולה מסוכנת או פירוק מכשיר יש לבדוק גם את הוראות היצרן לדגם המדויק.</div></div></main>
-<footer class="footer"><div class="wrap">FixBase · מאגר מדריכים למכשירים אלקטרוניים משנת 2010 · פעולות במתח גבוה, סוללות נפוחות, גז קירור או ציוד רפואי מחייבות איש מקצוע מוסמך.</div></footer>
-<div class="modal" id="modal" onclick="if(event.target===this)closeGuide()"><div class="panel"><div class="panelhead"><div><span class="verified">● מדריך מובנה במאגר</span></div><button class="x" onclick="closeGuide()">×</button></div><div class="panelbody"><article class="article" id="article"></article><aside id="guideAside"></aside></div></div></div>
+<header class="top">
+  <div class="wrap topin">
+    <a class="brand" href="#"><span class="mark"><span>F</span></span>FixBase</a>
+    <nav class="nav"><a href="#search">חיפוש</a><a href="#how">איך זה עובד</a><a href="#os">מערכות הפעלה</a></nav>
+    <div class="topspace"></div>
+    <button class="mini" onclick="focusSearch()">חיפוש ⌕</button>
+  </div>
+</header>
+
+<section class="hero" id="search">
+  <div class="wrap search-hero">
+    <div class="kicker">FixBase AI Search</div>
+    <h1>מה אתה מנסה לתקן?</h1>
+    <p>תאר את התקלה או את מה שאתה רוצה לעשות. קודם נמצא את הבעיה הנכונה, אחר כך נזהה את המכשיר המדויק שלך, ורק אז נציג מדריך.</p>
+
+    <div class="searchbox main-searchbox">
+      <span class="main-search-icon">⌕</span>
+      <input id="q" autocomplete="off" spellcheck="false" placeholder="לדוגמה: הטלפון לא נטען / מסך שחור / להתקין Windows 11">
+      <button onclick="searchGuides()">חפש</button>
+    </div>
+
+    <div class="examples">
+      <span>חיפושים נפוצים:</span>
+      <button onclick="quick('לא נטען')">לא נטען</button>
+      <button onclick="quick('מסך שחור')">מסך שחור</button>
+      <button onclick="quick('החלפת סוללה')">החלפת סוללה</button>
+      <button onclick="quick('התקנת Windows 11')">Windows 11</button>
+    </div>
+  </div>
+</section>
+
+<main class="wrap ai-shell">
+  <section id="guides" class="result-section">
+    <div class="sectionlead">
+      <div>
+        <span class="section-kicker">תוצאות</span>
+        <h2 id="resultTitle">חיפוש חכם לפי בעיה</h2>
+        <p id="resultSub">החיפוש מבין את הכוונה שלך לפני שהוא מחפש מכשיר.</p>
+      </div>
+    </div>
+    <div class="guidelist ai-guidelist" id="results"></div>
+  </section>
+
+  <section id="how" class="how-section">
+    <div class="sectionlead"><div><span class="section-kicker">התהליך</span><h2>לא מנחשים איזה מכשיר יש לך</h2></div></div>
+    <div class="how-grid">
+      <article><span>01</span><h3>מחפשים את הבעיה</h3><p>Gemini מנתח את מה שכתבת ומציע כמה פירושים רלוונטיים.</p></article>
+      <article><span>02</span><h3>מחפשים את המכשיר</h3><p>אחרי בחירת הבעיה נפתח חיפוש חדש ליצרן ולדגם המדויק.</p></article>
+      <article><span>03</span><h3>מקבלים מדריך</h3><p>המדריך נבנה רק אחרי שהדגם אושר, עם אזהרות ושלבים מותאמים.</p></article>
+    </div>
+  </section>
+
+  <section id="os" class="osstrip">
+    <h2>גם התקנות ושחזורי מערכת</h2>
+    <div class="osgrid">
+      <div class="oscard"><b>Windows</b><span>התקנה, Recovery, UEFI, דרייברים ושחזור.</span></div>
+      <div class="oscard"><b>macOS</b><span>Recovery, התקנה מחדש ושחזור.</span></div>
+      <div class="oscard"><b>Android</b><span>Recovery, Fastboot, Firmware והגדרות יצרן.</span></div>
+      <div class="oscard"><b>Linux</b><span>Live USB, Dual Boot ו-Bootloader.</span></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer"><div class="wrap">FixBase · מדריכי תיקון למכשירים משנת 2010 והלאה · בתיקונים מסוכנים יש לפנות לטכנאי מוסמך.</div></footer>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeGuide()">
+  <div class="panel">
+    <div class="panelhead">
+      <div><span class="verified">● FixBase AI</span></div>
+      <button class="x" onclick="closeGuide()">×</button>
+    </div>
+    <div class="panelbody">
+      <article class="article" id="article"></article>
+      <aside id="guideAside"></aside>
+    </div>
+  </div>
+</div>
+
 <script src="app.js"></script>
-</body></html>
+</body>
+</html>
